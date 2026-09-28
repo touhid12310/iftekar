@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Mohammad Habibur Rahman — site behaviour
+   Mohammad Habibur Rahaman — site behaviour
    Bangla is the default language (written directly in index.html).
    English strings live in EN below; elements opt in with data-i18n="key"
    (inner HTML) or data-i18n-attr="attr:key;attr2:key2" (attributes).
@@ -8,14 +8,14 @@
   "use strict";
 
   var EN = {
-    "meta.title": "Mohammad Habibur Rahman | Engineer, Entrepreneur & Social Worker",
-    "meta.description": "Mohammad Habibur Rahman — engineer, entrepreneur and social worker from Chattogram, working for a humane, prosperous and sustainable Bangladesh.",
+    "meta.title": "Mohammad Habibur Rahaman | Engineer, Entrepreneur & Social Worker",
+    "meta.description": "Mohammad Habibur Rahaman — engineer, entrepreneur and social worker from Chattogram, working for a humane, prosperous and sustainable Bangladesh.",
     "a11y.skip": "Skip to main content",
     "a11y.mainNav": "Main menu",
     "a11y.lang": "Choose language",
     "a11y.menu": "Open menu",
 
-    "brand.name": "Mohammad Habibur Rahman",
+    "brand.name": "Mohammad Habibur Rahaman",
     "brand.tagline": "Engineer | Entrepreneur | Social Worker",
 
     "nav.home": "Home",
@@ -31,13 +31,13 @@
     "search.label": "Search this site",
     "header.cta": "Contact Me",
 
-    "hero.kicker": "People • Business • Possibility",
+    "hero.kicker": "People • Possibility • Development",
     "hero.name1": "Mohammad",
-    "hero.name2": "Habibur Rahman",
+    "hero.name2": "Habibur Rahaman",
     "hero.roles": "Engineer | Entrepreneur | Social Worker",
     "hero.desc": "Working together for a humane, prosperous<br>and sustainable Bangladesh",
     "hero.quote": "“Success becomes meaningful only when we create value for people.”",
-    "hero.quoteBy": "— Mohammad Habibur Rahman",
+    "hero.quoteBy": "— Mohammad Habibur Rahaman",
     "hero.btnAbout": "Know About Me",
     "hero.btnProfile": "Download Profile",
     "hero.dream": "From Chattogram,<br>dreaming of a<br>developed<br>Bangladesh...",
@@ -47,8 +47,8 @@
     "hero.tile4": "Lifelong Learner",
 
     "about.title": "About Me",
-    "about.subtitle": "For learning, work, people and society",
-    "about.p1": "I am Mohammad Habibur Rahman — an engineer, entrepreneur and socially driven professional. My journey began in Damdama village of Lelang Union, Fatikchhari Upazila, Chattogram. I earned a bachelor’s degree in Computer Engineering and a Professional MBA in Management Information Systems (MIS). By bringing together technology, business and social development, I work to build a sustainable and prosperous society.",
+    "about.subtitle": "Learning, planning, working for people",
+    "about.p1": "I am Mohammad Habibur Rahaman — an engineer, entrepreneur and socially driven professional. My journey began in Damdama village of Lelang Union, Fatikchhari Upazila, Chattogram. I earned a bachelor’s degree in Computer Engineering and a Professional MBA in Management Information Systems (MIS). By bringing together technology, business and social development, I work to build a sustainable and prosperous society.",
     "about.p2": "I believe that enterprise, innovation, human values and social responsibility are the foundation of a developed Bangladesh.",
     "about.btnMore": "Read More",
     "about.btnJourney": "Watch My Journey",
@@ -165,8 +165,8 @@
     "footer.facebook": "Follow on Facebook",
     "footer.youtube": "Subscribe on YouTube",
     "footer.follow": "Follow Me",
-    "footer.signature": "“People<br>Possibility<br>Progress”",
-    "footer.copy": "Mohammad Habibur Rahman. All rights reserved.",
+    "footer.signature": "“People<br>Possibility<br>Development”",
+    "footer.copy": "Mohammad Habibur Rahaman. All rights reserved.",
     "footer.madeFor": "For Bangladesh, for the people",
 
     "modal.photo": "Photo",

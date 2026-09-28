@@ -1,6 +1,6 @@
 # মোহাম্মদ হাবিবুর রহমান — Personal Website
 
-A one-page personal website for **Mohammad Habibur Rahman** (engineer, entrepreneur and social worker, Chattogram).
+A one-page personal website for **Mohammad Habibur Rahaman** (engineer, entrepreneur and social worker, Chattogram).
 Plain HTML, CSS and JavaScript — no build step. Bangla is the default language, with an English switch.
 
 ## Run it
@@ -37,7 +37,7 @@ assets/images/          photos (WebP), logos (SVG) and favicon
 | Event photos (gallery 4–8) | `assets/images/gallery-4…8.webp` (+ `-lg` versions for the pop-up) | Currently free stock photos used as placeholders. Replace them with real event photos. |
 | Videos | `data-youtube=""` on each `.video-card` in `index.html` | Put a YouTube video ID (e.g. `dQw4w9WgXcQ`) and it plays in the pop-up. Without an ID the pop-up says the video is coming soon. Thumbnails: `assets/images/video-1…5.webp`. |
 | Social links | footer in `index.html` (links marked `#contact`) | Add the real LinkedIn, Facebook, YouTube and WhatsApp (`https://wa.me/880…`) URLs. |
-| Email & website | footer + the green “যোগাযোগ করুন” button | Uses `info@habiburrahman.com` / `www.habiburrahman.com` from the design. Change them if they differ. |
+| Email & website | footer + the green “যোগাযোগ করুন” button | Uses `info@habiburrahman.com` / `www.habiburrahman.bd` from the design. Change them if they differ. |
 | Logos | `assets/images/logos/*.svg` | Recreated approximations of Uniway, Prime, Bamboo Village, Prime Multi Trading, CCCI, চাটগাঁ ভাষা পরিষদ, Eco Foundation and Lions Club. Swap in the official logo files (same file names, or update the `src`). |
 | Blog posts & testimonials | `index.html` (`#blog`, `#testimonials`) + `EN` in `main.js` | Titles, dates and quotes are from the design mock-up. |
 | “বিস্তারিত দেখুন” / “সব … দেখুন” links | `index.html` | Point them to company websites or detail pages when available. |
@@ -52,7 +52,7 @@ button to `<a class="btn btn-outline-light" href="assets/profile.pdf" download>�
 
 - Icons: [Font Awesome Free 6.7.2](https://fontawesome.com) — CC BY 4.0 (embedded as an SVG sprite in `index.html`).
 - Fonts: Google Fonts — Hind Siliguri, Noto Sans Bengali, Poppins, Galada (SIL Open Font License).
-- Portraits of Mohammad Habibur Rahman: supplied by the site owner.
+- Portraits of Mohammad Habibur Rahaman: supplied by the site owner.
 - Stock photos (CC0 / public domain, no attribution required — listed for reference):
 
 | File(s) | Source | License |
