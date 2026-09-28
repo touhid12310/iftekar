@@ -1,0 +1,371 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="fonts.css">
+<style>
+  :root {
+    --blue: #1f4fe0; --blue-deep: #0f2fa8; --blue-dark: #0a1f6e;
+    --gold: #e0a832; --gold-light: #f7d27a; --gold-deep: #b9801c;
+    --ink: #1c2233; --muted: #4a5163;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: #fff; }
+  body { font-family: 'Montserrat', sans-serif; color: var(--ink); }
+  #stage { position: relative; width: 1080px; height: 1920px; overflow: hidden;
+    background: radial-gradient(ellipse at 50% 40%, #ffffff 0%, #f4f6fc 60%, #e8ecf8 100%); }
+  .layer { position: absolute; inset: 0; }
+  .center { position: absolute; left: 0; right: 0; text-align: center; }
+  .gold-text { background: linear-gradient(100deg, var(--gold-deep) 0%, var(--gold) 30%, var(--gold-light) 50%, var(--gold) 70%, var(--gold-deep) 100%);
+    background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; }
+  /* concentric ring texture like the invite */
+  #rings { position: absolute; left: 50%; top: 58%; width: 2600px; height: 2600px; margin: -1300px 0 0 -1300px;
+    background: repeating-radial-gradient(circle, rgba(31,79,224,0.06) 0 2px, transparent 2px 22px); border-radius: 50%; }
+  .dots { position: absolute; display: grid; grid-template-columns: repeat(4, 12px); gap: 18px; }
+  .dots i { width: 10px; height: 10px; border-radius: 3px; background: rgba(31,79,224,0.35); display: block; }
+
+  /* intro */
+  #intro-bg { background: linear-gradient(135deg, var(--blue) 0%, var(--blue-deep) 55%, var(--blue-dark) 100%); }
+  #ribbon-v, #ribbon-h { position: absolute; background: linear-gradient(90deg, var(--gold-deep), var(--gold-light) 45%, var(--gold) 60%, var(--gold-deep)); box-shadow: 0 0 30px rgba(0,0,0,0.25); }
+  #ribbon-v { left: 50%; width: 110px; margin-left: -55px; top: 0; height: 1920px; }
+  #ribbon-h { top: 50%; height: 110px; margin-top: -55px; left: 0; width: 1080px; background: linear-gradient(180deg, var(--gold-deep), var(--gold-light) 45%, var(--gold) 60%, var(--gold-deep)); }
+  #bow { position: absolute; left: 50%; top: 50%; width: 520px; height: 420px; margin: -250px 0 0 -260px; }
+
+  .kicker { font-weight: 800; letter-spacing: 10px; color: var(--blue); font-size: 44px; }
+  .rule { display: inline-block; height: 3px; width: 120px; background: var(--gold); vertical-align: middle; margin: 0 22px; }
+  .stars { font-size: 60px; color: var(--gold); letter-spacing: 30px; }
+  .stars span { display: inline-block; }
+  .grand { font-weight: 900; font-size: 250px; letter-spacing: -4px; color: var(--blue); line-height: 1; }
+  .opening { font-family: 'Great Vibes', cursive; font-size: 230px; line-height: 1; }
+  .body-text { font-family: 'Poppins', sans-serif; font-size: 46px; color: var(--muted); line-height: 1.45; }
+  .divider { display: flex; align-items: center; justify-content: center; gap: 0; }
+  .divider b { height: 3px; width: 170px; background: linear-gradient(90deg, transparent, var(--gold)); }
+  .divider b:last-child { background: linear-gradient(90deg, var(--gold), transparent); }
+  .divider i { width: 18px; height: 18px; border-radius: 50%; background: var(--gold); margin: 0 10px; }
+
+  .pill { position: absolute; left: 70px; right: 70px; height: 190px; border-radius: 40px;
+    background: linear-gradient(135deg, #2a5cf0, var(--blue) 50%, var(--blue-deep)); box-shadow: 0 30px 60px rgba(15,47,168,0.35);
+    display: flex; align-items: center; justify-content: center; gap: 30px; overflow: hidden; }
+  .pill .name { color: #fff; font-weight: 800; font-size: 56px; letter-spacing: 2px; white-space: nowrap; }
+  .pill .shine { position: absolute; top: -50%; width: 160px; height: 200%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent); transform: rotate(20deg); }
+  .pill .under { position: absolute; bottom: 30px; left: 25%; right: 25%; height: 3px; background: rgba(255,255,255,0.85); transform-origin: left; }
+
+  .pin { width: 150px; height: 150px; border-radius: 50%; background: var(--blue); display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 16px 40px rgba(31,79,224,0.35); }
+  .addr { font-family: 'Poppins', sans-serif; font-size: 58px; line-height: 1.4; color: var(--blue-deep); font-weight: 500; }
+
+  .box { position: absolute; left: 80px; right: 80px; border: 4px solid var(--blue); border-radius: 36px; background: rgba(255,255,255,0.85); }
+  .box .label { position: absolute; top: -40px; left: 50%; transform: translateX(-50%); background: #f7f8fc; padding: 0 30px; font-weight: 800; font-size: 60px; letter-spacing: 12px; white-space: nowrap; }
+  .icon-circle { width: 170px; height: 170px; border-radius: 50%; background: var(--blue); display: flex; align-items: center; justify-content: center; box-shadow: 0 14px 34px rgba(31,79,224,0.35); flex: none; }
+  .when-row { display: flex; align-items: center; gap: 44px; padding: 0 70px; }
+  .when-big { white-space: nowrap; font-weight: 800; font-size: 70px; color: var(--blue); line-height: 1.15; }
+  .when-gold { white-space: nowrap; font-weight: 800; font-size: 70px; color: var(--gold); line-height: 1.15; }
+
+  .host { font-weight: 800; font-size: 96px; color: var(--blue); }
+  .role { font-family: 'Poppins', sans-serif; font-size: 44px; color: var(--ink); }
+
+  /* final poster */
+  #final .kicker { font-size: 34px; letter-spacing: 7px; }
+  #final .grand { font-size: 190px; }
+  #final .opening { font-size: 170px; }
+  #final .body-text { font-size: 36px; }
+  #final .pill { height: 140px; left: 90px; right: 90px; border-radius: 30px; }
+  #final .pill .name { font-size: 50px; }
+  #final .pill .under { bottom: 22px; }
+  #final .addr { font-size: 40px; }
+  #final .when-big, #final .when-gold { font-size: 34px; }
+  #final .box .label { font-size: 40px; top: -28px; letter-spacing: 8px; }
+  #final .icon-circle { width: 96px; height: 96px; }
+  #final .host { font-size: 64px; }
+  #final .role { font-size: 30px; }
+
+  .corner-bl { position: absolute; left: -120px; bottom: -120px; width: 520px; height: 520px; }
+  .corner-br { position: absolute; right: -60px; bottom: -80px; width: 460px; height: 900px; }
+  .sparkle { position: absolute; width: 14px; height: 14px; border-radius: 50%; background: radial-gradient(circle, #fff7d6 0%, var(--gold) 45%, transparent 70%); }
+  .fade { position: absolute; inset: 0; background: #fff; pointer-events: none; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="rings"></div>
+  <div class="dots" id="dots1" style="right:70px;top:120px"></div>
+  <div class="dots" id="dots2" style="left:50px;top:1150px"></div>
+
+  <!-- decorative bottom corners (blue + gold like the invite) -->
+  <svg class="corner-bl" id="cornerBL" viewBox="0 0 520 520">
+    <polygon points="0,120 400,520 0,520" fill="#1f4fe0"/>
+    <polygon points="0,40 480,520 440,520 0,80" fill="#e0a832"/>
+  </svg>
+  <svg class="corner-br" id="cornerBR" viewBox="0 0 460 900">
+    <path d="M460 0 C 300 300, 260 600, 120 900 L460 900 Z" fill="#1f4fe0"/>
+    <path d="M460 60 C 320 340, 290 620, 170 900 L150 900 C 270 610, 300 330, 460 20 Z" fill="#e0a832"/>
+  </svg>
+
+  <div id="sparkles" class="layer" style="pointer-events:none"></div>
+
+  <!-- SCENE: headline -->
+  <div class="layer" id="s1">
+    <div class="center" style="top:430px"><span class="rule" id="r1"></span><span class="kicker" id="kicker">YOU ARE INVITED TO OUR</span><span class="rule" id="r2"></span></div>
+    <div class="center stars" style="top:520px"><span id="st1">★</span><span id="st2" style="font-size:80px">★</span><span id="st3">★</span></div>
+    <div class="center grand" id="grand" style="top:640px">GRAND</div>
+    <div class="center opening gold-text" id="opening" style="top:830px">Opening</div>
+    <div class="center body-text" id="invite1" style="top:1150px">We are pleased to invite you to the<br>Grand Opening of our New Office.</div>
+    <div class="center divider" id="div1" style="top:1320px"><b></b><i></i><b></b></div>
+  </div>
+
+  <!-- SCENE: company -->
+  <div class="layer" id="s2">
+    <div class="center kicker" id="presents" style="top:640px; font-size:40px; color:var(--gold); letter-spacing:12px">THE NEW OFFICE OF</div>
+    <div class="pill" id="pill" style="top:760px">
+      <svg id="logo" width="120" height="100" viewBox="0 0 120 100"></svg>
+      <div class="name">ZATTWORLD SOLUTIONS</div>
+      <div class="under" id="pillUnder"></div>
+      <div class="shine" id="shine"></div>
+    </div>
+  </div>
+
+  <!-- SCENE: venue -->
+  <div class="layer" id="s3">
+    <div class="center kicker" id="venueK" style="top:560px; letter-spacing:12px">VENUE</div>
+    <div class="center" style="top:680px"><div class="pin" id="pin">
+      <svg width="80" height="80" viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="#fff"/></svg>
+    </div></div>
+    <div class="center addr" id="addr1" style="top:900px">Level 10, Akhtaruzzaman Center,</div>
+    <div class="center addr" id="addr2" style="top:985px">21/22 Agrabad C/A, Chattogram.</div>
+    <div class="center" style="top:1100px"><div id="addrLine" style="display:inline-block;height:4px;width:760px;background:var(--blue);transform-origin:center"></div></div>
+  </div>
+
+  <!-- SCENE: date & time -->
+  <div class="layer" id="s4">
+    <div class="box" id="whenBox" style="top:600px; height:650px">
+      <div class="label" id="joinLabelWrap"><span class="gold-text" id="joinLabel">JOIN US ON</span></div>
+      <div class="when-row" id="rowDate" style="margin-top:110px">
+        <div class="icon-circle"><svg width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/><g fill="#fff" stroke="none"><rect x="6.5" y="12.5" width="2" height="2"/><rect x="11" y="12.5" width="2" height="2"/><rect x="15.5" y="12.5" width="2" height="2"/><rect x="6.5" y="16.5" width="2" height="2"/><rect x="11" y="16.5" width="2" height="2"/><rect x="15.5" y="16.5" width="2" height="2"/></g></svg></div>
+        <div><div class="when-big">MONDAY</div><div class="when-gold">28TH SEP 2026</div></div>
+      </div>
+      <div style="margin:60px 70px; height:3px; background:rgba(31,79,224,0.25)" id="whenSep"></div>
+      <div class="when-row" id="rowTime">
+        <div class="icon-circle"><svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><line id="hourHand" x1="12" y1="12" x2="12" y2="7.5"/><line id="minHand" x1="12" y1="12" x2="15.5" y2="12"/></svg></div>
+        <div><div class="when-big">AT <span style="color:var(--gold)">06:00 PM</span></div><div class="when-big">ONWARDS</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCENE: host -->
+  <div class="layer" id="s5">
+    <div class="center body-text" id="presence" style="top:620px; color:var(--ink); font-size:56px">Your presence will make this occasion<br>even more special for us.</div>
+    <div class="center divider" id="div2" style="top:840px"><b></b><i></i><b></b></div>
+    <div class="center" style="top:960px"><span class="rule" id="hr1" style="width:90px"></span><span class="host" id="host">Md Akber Hossen</span><span class="rule" id="hr2" style="width:90px"></span></div>
+    <div class="center role" id="role" style="top:1090px">Chief Executive Officer (CEO)</div>
+  </div>
+
+  <!-- SCENE: final poster (mirrors the invitation) -->
+  <div class="layer" id="final">
+    <div class="center" style="top:150px"><span class="rule" style="width:80px"></span><span class="kicker">YOU ARE INVITED TO OUR</span><span class="rule" style="width:80px"></span></div>
+    <div class="center stars" style="top:205px; font-size:44px">★<span style="font-size:58px">★</span>★</div>
+    <div class="center grand" style="top:285px">GRAND</div>
+    <div class="center opening gold-text" id="fOpening" style="top:425px">Opening</div>
+    <div class="center body-text" style="top:640px">We are pleased to invite you to the<br>Grand Opening of our New Office.</div>
+    <div class="center divider" style="top:770px"><b></b><i></i><b></b></div>
+    <div class="pill" id="fPill" style="top:830px">
+      <svg id="fLogo" width="90" height="75" viewBox="0 0 120 100"></svg>
+      <div class="name">ZATTWORLD SOLUTIONS</div>
+      <div class="under"></div>
+      <div class="shine" id="fShine"></div>
+    </div>
+    <div class="center" style="top:1015px; display:flex; justify-content:center; align-items:center; gap:26px">
+      <div class="pin" style="width:84px;height:84px;flex:none"><svg width="46" height="46" viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="#fff"/></svg></div>
+      <div class="addr" style="text-align:left">Level 10, Akhtaruzzaman Center,<br>21/22 Agrabad C/A, Chattogram.</div>
+    </div>
+    <div class="box" style="top:1210px; height:220px; left:90px; right:90px">
+      <div class="label"><span class="gold-text">JOIN US ON</span></div>
+      <div style="display:flex; align-items:center; height:100%; padding:10px 40px 0">
+        <div class="when-row" style="padding:0; gap:24px; flex:1">
+          <div class="icon-circle"><svg width="62" height="62" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/><g fill="#fff" stroke="none"><rect x="6.5" y="12.5" width="2" height="2"/><rect x="11" y="12.5" width="2" height="2"/><rect x="15.5" y="12.5" width="2" height="2"/><rect x="6.5" y="16.5" width="2" height="2"/><rect x="11" y="16.5" width="2" height="2"/><rect x="15.5" y="16.5" width="2" height="2"/></g></svg></div>
+          <div><div class="when-big">MONDAY</div><div class="when-gold">28TH SEP 2026</div></div>
+        </div>
+        <div style="width:3px; height:120px; background:rgba(31,79,224,0.35)"></div>
+        <div class="when-row" style="padding:0 0 0 30px; gap:24px; flex:1">
+          <div class="icon-circle"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5h3.5"/></svg></div>
+          <div><div class="when-big">AT <span style="color:var(--gold)">06:00 PM</span></div><div class="when-big">ONWARDS</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="center body-text" style="top:1480px; color:var(--ink)">Your presence will make this occasion<br>even more special for us.</div>
+    <div class="center" style="top:1615px"><span class="rule" style="width:70px"></span><span class="host">Md Akber Hossen</span><span class="rule" style="width:70px"></span></div>
+    <div class="center role" style="top:1700px">Chief Executive Officer (CEO)</div>
+    <div class="center body-text" id="fWelcome" style="top:1790px; font-size:34px; color:var(--muted)">We look forward to welcoming you!</div>
+  </div>
+
+  <!-- INTRO: gift-wrap reveal -->
+  <div class="layer" id="intro">
+    <div class="layer" id="introL" style="right:50%; background:linear-gradient(135deg, #2a5cf0, var(--blue-deep)); overflow:hidden"></div>
+    <div class="layer" id="introR" style="left:50%; background:linear-gradient(225deg, #2a5cf0, var(--blue-deep)); overflow:hidden"></div>
+    <div id="ribbon-h"></div>
+    <div id="ribbon-v"></div>
+    <svg id="bow" viewBox="0 0 520 420">
+      <defs>
+        <linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7d27a"/><stop offset="0.5" stop-color="#e0a832"/><stop offset="1" stop-color="#a86f14"/></linearGradient>
+        <linearGradient id="gg2" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7d27a"/><stop offset="0.5" stop-color="#e0a832"/><stop offset="1" stop-color="#a86f14"/></linearGradient>
+      </defs>
+      <path d="M260 250 L150 400 L200 400 L230 370 L250 405 Z" fill="url(#gg)"/>
+      <path d="M260 250 L370 400 L320 400 L290 370 L270 405 Z" fill="url(#gg2)"/>
+      <path d="M260 230 C 180 110, 40 80, 40 170 C 40 260, 180 270, 260 240 Z" fill="url(#gg)" stroke="#a86f14" stroke-width="4"/>
+      <path d="M260 230 C 340 110, 480 80, 480 170 C 480 260, 340 270, 260 240 Z" fill="url(#gg2)" stroke="#a86f14" stroke-width="4"/>
+      <path d="M250 232 C 190 170, 110 160, 95 175" stroke="#a86f14" stroke-width="5" fill="none" opacity="0.6"/>
+      <path d="M270 232 C 330 170, 410 160, 425 175" stroke="#a86f14" stroke-width="5" fill="none" opacity="0.6"/>
+      <ellipse cx="260" cy="238" rx="42" ry="38" fill="url(#gg)" stroke="#a86f14" stroke-width="4"/>
+    </svg>
+    <div class="center" id="introText" style="top:1330px; color:#fff; font-weight:700; font-size:46px; letter-spacing:8px">YOU'RE INVITED</div>
+  </div>
+
+  <div class="fade" id="fade"></div>
+</div>
+
+<script>
+// ---------- logo (two interlocking hooks, as on the invite) ----------
+const LOGO = `
+  <g fill="none" stroke="#fff" stroke-width="15" stroke-linecap="butt" stroke-linejoin="miter">
+    <path d="M18 62 C 12 40, 30 20, 58 18 L 86 18 C 104 18, 110 34, 102 46 L 96 54"/>
+    <path d="M102 38 C 108 60, 90 80, 62 82 L 34 82 C 16 82, 10 66, 18 54 L 24 46"/>
+    <path d="M40 64 L 80 36"/>
+  </g>`;
+document.getElementById('logo').innerHTML = LOGO;
+document.getElementById('fLogo').innerHTML = LOGO;
+for (const id of ['dots1','dots2']) document.getElementById(id).innerHTML = '<i></i>'.repeat(id==='dots1'?16:12);
+
+// ---------- sparkles (deterministic) ----------
+let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const SP = [];
+const spWrap = document.getElementById('sparkles');
+for (let i = 0; i < 70; i++) {
+  const el = document.createElement('div'); el.className = 'sparkle'; spWrap.appendChild(el);
+  SP.push({ el, x: rnd()*1080, y: rnd()*1920, s: 0.6 + rnd()*1.8, ph: rnd()*6.28, sp: 0.6 + rnd()*1.2, drift: 20 + rnd()*60 });
+}
+
+// ---------- easing helpers ----------
+const clamp = (v, a=0, b=1) => Math.min(b, Math.max(a, v));
+const prog = (t, a, b) => clamp((t - a) / (b - a));
+const eOut = p => 1 - Math.pow(1 - p, 3);
+const eInOut = p => p < .5 ? 4*p*p*p : 1 - Math.pow(-2*p + 2, 3) / 2;
+const eBack = p => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3*Math.pow(p-1,3) + c1*Math.pow(p-1,2); };
+const $ = id => document.getElementById(id);
+function set(id, o, tf) { const el = typeof id === 'string' ? $(id) : id; el.style.opacity = o; el.style.transform = tf || ''; }
+function rise(id, t, a, dur=0.7, dist=60) { const p = eOut(prog(t, a, a+dur)); set(id, p, `translateY(${(1-p)*dist}px)`); }
+function pop(id, t, a, dur=0.6) { const p = prog(t, a, a+dur); set(id, clamp(p*2), `scale(${0.3 + 0.7*eBack(p)})`); }
+// a scene is visible between [a,b] with 0.5s fade/slide out
+function sceneAlpha(t, a, b) { return prog(t, a - 0.01, a) * (1 - prog(t, b - 0.5, b)); }
+
+const DURATION = 30;
+
+function render(t) {
+  // ---- intro (0 - 3.2s): gift wrap opens ----
+  const open = eInOut(prog(t, 2.0, 3.0));
+  $('intro').style.display = t < 3.1 ? '' : 'none';
+  $('introL').style.transform = `translateX(${-open*100}%)`;
+  $('introR').style.transform = `translateX(${open*100}%)`;
+  const rv = eOut(prog(t, 0.1, 0.8)), rh = eOut(prog(t, 0.4, 1.1));
+  $('ribbon-v').style.transform = `scaleY(${rv}) translateX(${open*600}px)`; $('ribbon-v').style.transformOrigin = 'top';
+  $('ribbon-v').style.opacity = 1 - prog(t, 2.0, 2.4);
+  $('ribbon-h').style.transform = `scaleX(${rh}) translateY(${-open*1000}px)`; $('ribbon-h').style.transformOrigin = 'left';
+  $('ribbon-h').style.opacity = 1 - prog(t, 2.0, 2.4);
+  const bp = prog(t, 0.9, 1.6);
+  $('bow').style.opacity = clamp(bp*3) * (1 - prog(t, 2.0, 2.5));
+  $('bow').style.transform = `scale(${(0.2 + 0.8*eBack(bp)) * (1 + prog(t,2.0,2.6)*1.5)}) rotate(${Math.sin(t*3)*2}deg)`;
+  const it = eOut(prog(t, 1.3, 1.9));
+  set('introText', it * (1 - prog(t, 1.9, 2.2)), `translateY(${(1-it)*40}px)`);
+  $('introText').style.letterSpacing = (8 + (1-it)*20) + 'px';
+
+  // ---- scene 1: headline (2.4 - 9.0) ----
+  const s1 = sceneAlpha(t, 2.4, 9.0);
+  $('s1').style.opacity = s1; $('s1').style.transform = `translateY(${-prog(t,8.5,9.0)*80}px)`;
+  const k = eOut(prog(t, 2.9, 3.6));
+  set('kicker', k, `translateY(${(1-k)*30}px)`); $('kicker').style.letterSpacing = (10 + (1-k)*14) + 'px';
+  $('r1').style.width = $('r2').style.width = (eOut(prog(t, 3.2, 3.9)) * 120) + 'px';
+  pop('st1', t, 3.6); pop('st2', t, 3.75); pop('st3', t, 3.9);
+  const g = prog(t, 4.0, 4.6);
+  set('grand', clamp(g*2), `scale(${1 + (1-eOut(g))*1.2})`);
+  $('grand').style.filter = `blur(${(1-eOut(g))*14}px)`;
+  const o = eOut(prog(t, 4.6, 5.8));
+  $('opening').style.opacity = 1; $('opening').style.clipPath = `inset(0 ${(1-o)*100}% 0 0)`;
+  $('opening').style.backgroundPosition = `${200 - ((t*40) % 200)}% 0`;
+  rise('invite1', t, 6.0, 0.8);
+  const d1 = eOut(prog(t, 6.6, 7.2)); set('div1', d1, `scaleX(${d1})`);
+
+  // ---- scene 2: company (9.0 - 13.5) ----
+  const s2 = sceneAlpha(t, 9.0, 13.5);
+  $('s2').style.opacity = s2; $('s2').style.transform = `translateY(${-prog(t,13.0,13.5)*80}px)`;
+  rise('presents', t, 9.1, 0.7, 40);
+  const pl = eBack(prog(t, 9.4, 10.2));
+  set('pill', clamp(prog(t,9.4,9.8)), `translateX(${(1-pl)*-1100}px)`);
+  const lg = eOut(prog(t, 10.1, 10.9));
+  $('logo').style.transform = `rotate(${(1-lg)*-360}deg) scale(${lg})`;
+  $('pillUnder').style.transform = `scaleX(${eOut(prog(t, 10.6, 11.4))})`;
+  $('shine').style.left = (-300 + eInOut(prog(t, 11.2, 12.2)) * 1400) + 'px';
+
+  // ---- scene 3: venue (13.5 - 18.0) ----
+  const s3 = sceneAlpha(t, 13.5, 18.0);
+  $('s3').style.opacity = s3; $('s3').style.transform = `translateY(${-prog(t,17.5,18.0)*80}px)`;
+  rise('venueK', t, 13.6, 0.6, 30);
+  const pd = prog(t, 13.8, 14.6);
+  const bounce = pd < 1 ? (1 - eBack(pd)) * -500 : 0;
+  set('pin', clamp(pd*3), `translateY(${bounce}px) scale(${1 + Math.max(0, Math.sin((t-14.6)*5)) * 0.06 * (t>14.6 && t<16 ? 1 : 0)})`);
+  rise('addr1', t, 14.6, 0.7); rise('addr2', t, 14.9, 0.7);
+  $('addrLine').style.transform = `scaleX(${eOut(prog(t, 15.3, 16.1))})`;
+
+  // ---- scene 4: date & time (18.0 - 23.0) ----
+  const s4 = sceneAlpha(t, 18.0, 23.0);
+  $('s4').style.opacity = s4; $('s4').style.transform = `translateY(${-prog(t,22.5,23.0)*80}px)`;
+  const bx = eOut(prog(t, 18.0, 18.8));
+  set('whenBox', bx, `scale(${0.85 + 0.15*bx})`);
+  const jl = eOut(prog(t, 18.5, 19.1));
+  $('joinLabelWrap').style.opacity = jl; $('joinLabelWrap').style.letterSpacing = (12 + (1-jl)*20) + 'px';
+  $('joinLabel').style.backgroundPosition = `${200 - ((t*40) % 200)}% 0`;
+  const rd = eOut(prog(t, 19.0, 19.7)); set('rowDate', rd, `translateX(${(1-rd)*-200}px)`);
+  const ws = eOut(prog(t, 19.5, 20.1)); set('whenSep', ws, `scaleX(${ws})`);
+  const rt = eOut(prog(t, 19.9, 20.6)); set('rowTime', rt, `translateX(${(1-rt)*200}px)`);
+  // clock hands spin and settle on 6:00
+  const cp = eInOut(prog(t, 20.2, 21.8));
+  const minA = 90 + cp * 360 * 3 - 90 * cp;   // ends pointing up (12)
+  const hrA = 0 + cp * 180;                   // ends pointing down (6)
+  $('minHand').setAttribute('transform', `rotate(${minA - 90} 12 12)`);
+  $('hourHand').setAttribute('transform', `rotate(${hrA} 12 12)`);
+
+  // ---- scene 5: host (23.0 - 27.2) ----
+  const s5 = sceneAlpha(t, 23.0, 27.2);
+  $('s5').style.opacity = s5; $('s5').style.transform = `translateY(${-prog(t,26.7,27.2)*80}px)`;
+  rise('presence', t, 23.1, 0.9);
+  const d2 = eOut(prog(t, 23.8, 24.4)); set('div2', d2, `scaleX(${d2})`);
+  const h = eOut(prog(t, 24.3, 25.1));
+  set('host', h, `scale(${0.9 + 0.1*h})`); $('host').style.filter = `blur(${(1-h)*10}px)`;
+  $('hr1').style.width = $('hr2').style.width = (eOut(prog(t, 24.8, 25.4)) * 90) + 'px';
+  rise('role', t, 25.1, 0.7, 30);
+
+  // ---- final poster (27.2 - end) ----
+  const fp = eOut(prog(t, 27.2, 28.0));
+  $('final').style.opacity = fp; $('final').style.transform = `scale(${1.06 - 0.06*fp})`;
+  $('final').style.display = t > 27.1 ? '' : 'none';
+  $('fOpening').style.backgroundPosition = `${200 - ((t*40) % 200)}% 0`;
+  $('fShine').style.left = (-300 + eInOut(prog(t, 28.2, 29.2)) * 1400) + 'px';
+  const fw = prog(t, 28.4, 29.0); $('fWelcome').style.opacity = 0.4 + 0.6*fw;
+
+  // ---- ambience ----
+  $('rings').style.transform = `rotate(${t*2}deg) scale(${1 + Math.sin(t*0.5)*0.03})`;
+  const cornersIn = eOut(prog(t, 2.6, 3.6));
+  $('cornerBL').style.transform = `translate(${(1-cornersIn)*-300}px, ${(1-cornersIn)*300}px)`;
+  $('cornerBR').style.transform = `translate(${(1-cornersIn)*300}px, ${(1-cornersIn)*300}px)`;
+  $('dots1').style.opacity = $('dots2').style.opacity = cornersIn;
+  const sparkOn = prog(t, 2.8, 3.8);
+  for (const s of SP) {
+    const tw = 0.5 + 0.5*Math.sin(t*s.sp*3 + s.ph);
+    const y = ((s.y - t*s.drift) % 1920 + 1920) % 1920;
+    s.el.style.opacity = sparkOn * tw * 0.9;
+    s.el.style.transform = `translate(${s.x + Math.sin(t*0.7 + s.ph)*20}px, ${y}px) scale(${s.s * (0.6 + tw*0.6)})`;
+  }
+  // fade to white at the very beginning of the reveal & at the end
+  $('fade').style.opacity = 0;
+}
+window.render = render; window.DURATION = DURATION;
+render(0);
+</script>
+</body>
+</html>
